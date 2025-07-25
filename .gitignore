@@ -1,0 +1,18 @@
+# Ignorar build y archivos generados
+build/
+*.user
+*.user.*
+*.autosave
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.lib
+.DS_Store
+Thumbs.db
