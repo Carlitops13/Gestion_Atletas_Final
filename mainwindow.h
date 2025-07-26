@@ -2,6 +2,16 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
+#include <QTableWidgetItem>
+
+
+struct Atleta {
+    int id;
+    QString nombre;
+    int edad;
+    QString deporte;
+};
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +27,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_registrar_clicked();
+    void on_tableWidget_atletas_itemClicked(QTableWidgetItem *item);
+
 private:
     Ui::MainWindow *ui;
+    QString idSeleccionado;
+    void cargarAtletas();
+    int generarNuevoId();
+    QString formatearNombrePropio(const QString &texto);
+    void limpiarCampos();
 };
-#endif // MAINWINDOW_H
+#endif
+
