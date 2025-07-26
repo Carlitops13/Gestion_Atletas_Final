@@ -43,7 +43,6 @@ public:
     QLineEdit *lineEdit_nombre;
     QLabel *label_3;
     QSpinBox *spinBox_edad;
-    QLabel *label_4;
     QComboBox *comboBox_deporte;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButton_registrar;
@@ -52,6 +51,7 @@ public:
     QPushButton *pushButton_limpiar;
     QPushButton *pushButton_borrarTodo;
     QPushButton *pushButton_guardar;
+    QLabel *label_4;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -111,11 +111,6 @@ public:
 
         formLayout->setWidget(2, QFormLayout::ItemRole::FieldRole, spinBox_edad);
 
-        label_4 = new QLabel(centralwidget);
-        label_4->setObjectName("label_4");
-
-        formLayout->setWidget(3, QFormLayout::ItemRole::LabelRole, label_4);
-
         comboBox_deporte = new QComboBox(centralwidget);
         comboBox_deporte->addItem(QString());
         comboBox_deporte->addItem(QString());
@@ -164,6 +159,11 @@ public:
 
         formLayout->setLayout(4, QFormLayout::ItemRole::FieldRole, horizontalLayout);
 
+        label_4 = new QLabel(centralwidget);
+        label_4->setObjectName("label_4");
+
+        formLayout->setWidget(3, QFormLayout::ItemRole::LabelRole, label_4);
+
 
         gridLayout->addLayout(formLayout, 0, 0, 1, 1);
 
@@ -188,7 +188,6 @@ public:
         label_id->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "\360\237\217\203Nombre Completo del atleta: ", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "\360\237\224\236 Edad: ", nullptr));
-        label_4->setText(QCoreApplication::translate("MainWindow", " \360\237\217\220 Deporte: ", nullptr));
         comboBox_deporte->setItemText(0, QString());
         comboBox_deporte->setItemText(1, QCoreApplication::translate("MainWindow", "F\303\272tbol", nullptr));
         comboBox_deporte->setItemText(2, QCoreApplication::translate("MainWindow", "Calistenia", nullptr));
@@ -204,6 +203,7 @@ public:
         pushButton_limpiar->setText(QCoreApplication::translate("MainWindow", "\360\237\247\271 Limpiar Campos", nullptr));
         pushButton_borrarTodo->setText(QCoreApplication::translate("MainWindow", "\360\237\206\221 Limpiar Tabla", nullptr));
         pushButton_guardar->setText(QCoreApplication::translate("MainWindow", "\360\237\222\276 Guardar", nullptr));
+        label_4->setText(QCoreApplication::translate("MainWindow", "\360\237\217\220 Deporte:", nullptr));
     } // retranslateUi
 
 };
