@@ -1,4 +1,21 @@
-"build/" 
-"*.ninja_log" 
+# Archivos y carpetas de compilación
+build/
+build-*/
+debug/
+release/
+CMakeLists.txt.user
+*.user
+*.pro.user
 
-"*.user*"
+# Archivos del compilador y del enlazador
+*.o
+*.obj
+*.dll
+*.exe
+*.so
+*.dylib
+*.lib
+*.a
+
+# Carpetas de Qt Creator
+.qtc_clangd/
