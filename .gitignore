@@ -1,11 +1,19 @@
-# Archivos y carpetas de compilación
+# Archivos y carpetas de compilación de Qt/CMake
 build/
 build-*/
 debug/
 release/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.autosave
+
+# Archivos de configuración de usuario
 CMakeLists.txt.user
 *.user
 *.pro.user
+*.user.*
 
 # Archivos del compilador y del enlazador
 *.o
@@ -16,6 +24,10 @@ CMakeLists.txt.user
 *.dylib
 *.lib
 *.a
+
+# Carpetas y archivos de sistema operativo
+.DS_Store
+Thumbs.db
 
 # Carpetas de Qt Creator
 .qtc_clangd/
