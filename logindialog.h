@@ -18,8 +18,9 @@ public:
 private slots:
     void on_pushButton_ingresar_clicked();
 private:
-    Ui::LoginDialog *ui;
+    Ui::LoginDialog *ui;//hola
     bool validarUsuario(const QString &usuario);
 };
+
 
 #endif // LOGINDIALOG_H

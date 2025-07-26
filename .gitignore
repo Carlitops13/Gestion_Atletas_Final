@@ -1,18 +1,33 @@
-# Ignorar build y archivos generados
+# Archivos y carpetas de compilación de Qt/CMake
 build/
-*.user
-*.user.*
-*.autosave
+build-*/
+debug/
+release/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
+*.autosave
+
+# Archivos de configuración de usuario
+CMakeLists.txt.user
+*.user
+*.pro.user
+*.user.*
+
+# Archivos del compilador y del enlazador
 *.o
 *.obj
-*.exe
 *.dll
+*.exe
 *.so
-*.a
+*.dylib
 *.lib
+*.a
+
+# Carpetas y archivos de sistema operativo
 .DS_Store
 Thumbs.db
+
+# Carpetas de Qt Creator
+.qtc_clangd/
