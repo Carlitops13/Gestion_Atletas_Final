@@ -10,8 +10,6 @@
 #include <ctime>
 #include <QFileDialog>
 
-
-//HOLA SOY BRYAN
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -32,10 +30,9 @@ void MainWindow::on_pushButton_registrar_clicked()
     QString nombre = ui->lineEdit_nombre->text();
     QString deporte = ui->comboBox_deporte->currentText();
 
-    if(nombre.isEmpty()){
-        QMessageBox::warning(this, "Campo vacío", "El nombre no puede estar vacío");
+    if(nombre.isEmpty() || ui->comboBox_deporte->currentIndex() == 0){
+        QMessageBox::warning(this, "Campo vacío", "El nombre y el deporte no pueden estar vacíos");
         return;
-
     }
     if (!idSeleccionado.isEmpty()) {
         QMessageBox::warning(this, "Operación Inválida",
@@ -73,10 +70,6 @@ void MainWindow::on_pushButton_registrar_clicked()
     ui->spinBox_edad->setValue(18);
     ui->comboBox_deporte->setCurrentIndex(0);
 }
-
-
-
-
 void MainWindow::on_tableWidget_atletas_itemClicked(QTableWidgetItem *item)
 {
     if (!item) return;
@@ -90,73 +83,15 @@ void MainWindow::on_tableWidget_atletas_itemClicked(QTableWidgetItem *item)
     ui->spinBox_edad->setValue(ui->tableWidget_atletas->item(fila, 2)->text().toInt());
     ui->comboBox_deporte->setCurrentText(ui->tableWidget_atletas->item(fila, 3)->text());
 }
-
-
-//Aquí va la función para limpiar campos
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//aquí va la función para el boton limpiar Campos
-
-
-
-
-
-
-
-
-
-
-
-void MainWindow::cargarAtletas()
+void MainWindow::limpiarCampos()
 {
-    ui->tableWidget_atletas->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    QVector<Atleta> atletas;
-    QFile archivo("atletas.txt");
-    if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&archivo);
-
-        while (!in.atEnd()) {
-            QString linea = in.readLine();
-            if(linea.isEmpty()) continue;
-            QStringList separador = linea.split(':');
-            if (separador.size() == 4) {
-                Atleta atletaLeido;
-                atletaLeido.id = separador[0].toInt();
-                atletaLeido.nombre = separador[1];
-                atletaLeido.edad = separador[2].toInt();
-                atletaLeido.deporte = separador[3];
-                atletas.append(atletaLeido);
-            }
-        }
-        archivo.close();
-    }
-
-    ui->tableWidget_atletas->setRowCount(atletas.size());
-    for (int i = 0; i < atletas.size(); ++i) {
-        const auto& atleta = atletas[i];
-        ui->tableWidget_atletas->setItem(i, 0, new QTableWidgetItem(QString::number(atleta.id)));
-        ui->tableWidget_atletas->setItem(i, 1, new QTableWidgetItem(atleta.nombre));
-        ui->tableWidget_atletas->setItem(i, 2, new QTableWidgetItem(QString::number(atleta.edad)));
-        ui->tableWidget_atletas->setItem(i, 3, new QTableWidgetItem(atleta.deporte));
-    }
+    idSeleccionado.clear();
+    ui->label_id->setText("ID");
+    ui->lineEdit_nombre->clear();
+    ui->spinBox_edad->setValue(18);
+    ui->comboBox_deporte->setCurrentIndex(0);
+    ui->tableWidget_atletas->clearSelection();
 }
-
-//Aquí está la función para actualizar
-
 void MainWindow::on_pushButton_actualizar_clicked()
 {
 
@@ -214,41 +149,84 @@ void MainWindow::on_pushButton_actualizar_clicked()
     limpiarCampos();
     QMessageBox::information(this, "Éxito", "Atleta actualizado correctamente.");
 }
+void MainWindow::on_pushButton_eliminar_clicked()
+{
+    if (idSeleccionado.isEmpty()) {
+        QMessageBox::warning(this, "Sin Selección", "Por favor, selecciona un atleta de la tabla para eliminar.");
+        return;
+    }
 
-//Aquí va la función para eliminar
+    QMessageBox::StandardButton respuesta;
+    respuesta = QMessageBox::question(this, "Confirmar Eliminación", "¿Estás seguro de que quieres eliminar al atleta con ID " + idSeleccionado + "?",
+                                      QMessageBox::Yes | QMessageBox::No);
+    if (respuesta == QMessageBox::No) {
+        return;
+    }
 
+    QFile archivo("atletas.txt");
+    QStringList lineas;
+    if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&archivo);
+        while (!in.atEnd()) {
+            lineas.append(in.readLine());
+        }
+        archivo.close();
+    } else {
+        QMessageBox::critical(this, "Error de Archivo", "No se pudo leer el archivo para eliminar.");
+        return;
+    }
 
+    if (archivo.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        QTextStream out(&archivo);
+        for (const QString &linea : lineas) {
+            if (!linea.startsWith(idSeleccionado + ":")) {
+                out << linea << "\n";
+            }
+        }
+        archivo.close();
+    } else {
+        QMessageBox::critical(this, "Error de Archivo", "No se pudo escribir en el archivo para eliminar.");
+        return;
+    }
 
+    cargarAtletas();
+    idSeleccionado.clear();
+    ui->label_id->setText("ID");
+    QMessageBox::information(this, "Eliminación Exitosa", "Atleta eliminado correctamente.");
+}
+void MainWindow::cargarAtletas()
+{
+    ui->tableWidget_atletas->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    QVector<Atleta> atletas;
+    QFile archivo("atletas.txt");
+    if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&archivo);
 
+        while (!in.atEnd()) {
+            QString linea = in.readLine();
+            if(linea.isEmpty()) continue;
+            QStringList separador = linea.split(':');
+            if (separador.size() == 4) {
+                Atleta atletaLeido;
+                atletaLeido.id = separador[0].toInt();
+                atletaLeido.nombre = separador[1];
+                atletaLeido.edad = separador[2].toInt();
+                atletaLeido.deporte = separador[3];
+                atletas.append(atletaLeido);
+            }
+        }
+        archivo.close();
+    }
 
-
-
-
-
-
-//Aquí va la función para eliminar todo el contenido de la tabla
-
-
-
-
-
-
-
-
-
-
-
-//Aquí va la función para guardar e archivo con los atletas.txt
-
-
-
-
-
-
-
-
-
-
+    ui->tableWidget_atletas->setRowCount(atletas.size());
+    for (int i = 0; i < atletas.size(); ++i) {
+        const auto& atleta = atletas[i];
+        ui->tableWidget_atletas->setItem(i, 0, new QTableWidgetItem(QString::number(atleta.id)));
+        ui->tableWidget_atletas->setItem(i, 1, new QTableWidgetItem(atleta.nombre));
+        ui->tableWidget_atletas->setItem(i, 2, new QTableWidgetItem(QString::number(atleta.edad)));
+        ui->tableWidget_atletas->setItem(i, 3, new QTableWidgetItem(atleta.deporte));
+    }
+}
 int MainWindow::generarNuevoId()
 {
     int idAleatorio;
@@ -271,7 +249,6 @@ int MainWindow::generarNuevoId()
     } while (idExiste);
     return idAleatorio;
 }
-
 QString MainWindow::formatearNombrePropio(const QString &texto)
 {
     QStringList palabras = texto.split(' ', Qt::SkipEmptyParts);
@@ -284,7 +261,76 @@ QString MainWindow::formatearNombrePropio(const QString &texto)
     }
     return textoFormateado.trimmed();
 }
+void MainWindow::on_pushButton_borrarTodo_clicked()
+{
+    QMessageBox::StandardButton respuesta;
+    respuesta = QMessageBox::warning(this, "Confirmación Requerida",
+                                     "¿Estás SEGURO de que quieres borrar TODOS los atletas?",
+                                     QMessageBox::Yes | QMessageBox::No);
 
 
+    if (respuesta== QMessageBox::No) {
+        return;
+    }
 
+    QFile archivo("atletas.txt");
+
+    if (archivo.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        archivo.close();
+        QMessageBox::information(this, "Completado", "Todos los datos han sido eliminados.");
+    } else {
+        QMessageBox::critical(this, "Error", "No se pudo acceder al archivo para borrar los datos.");
+        return;
+    }
+
+
+    cargarAtletas();
+    limpiarCampos();
+}
+void MainWindow::on_pushButton_guardar_clicked()
+{
+    if (ui->tableWidget_atletas->rowCount() == 0) {
+        QMessageBox::information(this, "Tabla Vacía", "No hay atletas para guardar en el archivo.");
+        return;
+    }
+
+
+    QString nombreArchivo = QFileDialog::getSaveFileName(this, "Guardar Lista de Atletas", "",  "Archivos de Texto (*.txt)");
+
+
+    if (nombreArchivo.isEmpty()) {
+        return;
+    }
+
+
+    QString contenido;
+
+
+    contenido += "Lista de Atletas\n";
+    contenido += "=================================================\n";
+    contenido += "ID\tNombre\t\t\tEdad\tDeporte\n";
+    contenido += "-------------------------------------------------\n";
+
+
+    for (int fila = 0; fila < ui->tableWidget_atletas->rowCount(); ++fila) {
+        QString id = ui->tableWidget_atletas->item(fila, 0)->text();
+        QString nombre = ui->tableWidget_atletas->item(fila, 1)->text();
+        QString edad = ui->tableWidget_atletas->item(fila, 2)->text();
+        QString deporte = ui->tableWidget_atletas->item(fila, 3)->text();
+
+
+        contenido += id + "\t" + nombre.leftJustified(20, ' ') + "\t" + edad + "\t" + deporte + "\n";
+    }
+
+
+    QFile archivo(nombreArchivo);
+    if(archivo.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&archivo);
+        out << contenido;
+        archivo.close();
+        QMessageBox::information(this, "Guardado Exitoso", "La lista de atletas se ha guardado correctamente.");
+    } else {
+        QMessageBox::critical(this, "Error", "No se pudo guardar el archivo.");
+    }
+}
 
