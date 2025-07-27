@@ -5,7 +5,6 @@
 #include <QString>
 #include <QTableWidgetItem>
 
-
 struct Atleta {
     int id;
     QString nombre;
@@ -29,7 +28,13 @@ public:
 
 private slots:
     void on_pushButton_registrar_clicked();
+    void on_pushButton_eliminar_clicked();
+    void on_pushButton_actualizar_clicked();
+
     void on_tableWidget_atletas_itemClicked(QTableWidgetItem *item);
+    void on_pushButton_limpiar_clicked();
+    void on_pushButton_borrarTodo_clicked();
+    void on_pushButton_guardar_clicked();
 
 
 private:
