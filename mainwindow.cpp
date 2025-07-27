@@ -10,6 +10,8 @@
 #include <ctime>
 #include <QFileDialog>
 
+
+//HOLA SOY BRYAN
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
