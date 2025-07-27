@@ -31,6 +31,7 @@ private slots:
     void on_pushButton_registrar_clicked();
     void on_tableWidget_atletas_itemClicked(QTableWidgetItem *item);
 
+
 private:
     Ui::MainWindow *ui;
     QString idSeleccionado;

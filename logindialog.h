@@ -1,26 +1,48 @@
-#ifndef LOGINDIALOG_H
-#define LOGINDIALOG_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#include <QDialog>
+#include <QMainWindow>
+#include <QString>
+#include <QTableWidgetItem>
 
+struct Atleta {
+    int id;
+    QString nombre;
+    int edad;
+    QString deporte;
+};
 
+QT_BEGIN_NAMESPACE
 namespace Ui {
-class LoginDialog;
+class MainWindow;
 }
+QT_END_NAMESPACE
 
-class LoginDialog : public QDialog
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit LoginDialog(QWidget *parent = nullptr);
-    ~LoginDialog();
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
 private slots:
-    void on_pushButton_ingresar_clicked();
+    void on_pushButton_registrar_clicked();
+    void on_pushButton_eliminar_clicked();
+    void on_pushButton_actualizar_clicked();
+
+    void on_tableWidget_atletas_itemClicked(QTableWidgetItem *item);
+    void on_pushButton_limpiar_clicked();
+    void on_pushButton_borrarTodo_clicked();
+    void on_pushButton_guardar_clicked();
+
+
 private:
-    Ui::LoginDialog *ui;//hola
-    bool validarUsuario(const QString &usuario);
+    Ui::MainWindow *ui;
+    QString idSeleccionado;
+    void cargarAtletas();
+    int generarNuevoId();
+    QString formatearNombrePropio(const QString &texto);
+    void limpiarCampos();
 };
-
-
-#endif // LOGINDIALOG_H
+#endif
