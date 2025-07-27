@@ -33,11 +33,12 @@ private slots:
     void on_tableWidget_atletas_itemClicked(QTableWidgetItem *item);
     void on_pushButton_borrarTodo_clicked();
     void on_pushButton_guardar_clicked();
-
+    void on_pushButton_limpiar_clicked();
 
 private:
     Ui::MainWindow *ui;
     QString idSeleccionado;
+    QVector<Atleta> atletas;
     void cargarAtletas();
     int generarNuevoId();
     QString formatearNombrePropio(const QString &texto);
