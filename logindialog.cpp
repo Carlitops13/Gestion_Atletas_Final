@@ -1,10 +1,7 @@
 #include "logindialog.h"
-
 #include "ui_logindialog.h"
-
 #include <QFile>
 #include <QTextStream>
-#include <QRegularExpression>
 #include <QMessageBox>
 
 LoginDialog::LoginDialog(QWidget *parent)
@@ -20,54 +17,50 @@ LoginDialog::~LoginDialog(){
 }
 
 void LoginDialog::on_pushButton_ingresar_clicked(){
-
-
     QString usuario = ui->lineEdit_usuario->text();
     QString password = ui->lineEdit_password->text();
     if (usuario.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "Campos Vacíos", "Por favor, ingresa tu usuario y contraseña.");
         return;
     }
-
-    if (!validarUsuario(usuario)) {
-
-        QMessageBox::warning(this, "Error de Validación", "El nombre de usuario solo debe contener letras sin espacios.");
-        return;
+    for (int i = 0; i < usuario.length(); ++i) {
+        QChar c = usuario[i];
+        if (!c.isLetter()) {
+            QMessageBox::warning(this, "Error de Validación", "El nombre de usuario solo debe contener letras sin espacios.");
+            return;
+        }
     }
 
     QFile file("usuarios.txt");
-    if(!file.exists()){
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+    if (!file.exists()) {
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             QTextStream out(&file);
             out << "admin:admin123";
             file.close();
         }
     }
-
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
         QTextStream in(&file);
         bool credencialesCorrectas = false;
-        while (!in.atEnd()){
+
+        while (!in.atEnd()) {
             QString line = in.readLine();
             QStringList partes = line.split(':');
-
-            if (partes.size() == 2 && partes[0] == usuario && partes[1] == password){
-                credencialesCorrectas = true;
-                break;
+            if (partes.size() == 2) {
+                QString usuarioArchivo = partes[0];
+                QString passwordArchivo = partes[1];
+                if (usuario == usuarioArchivo && password == passwordArchivo) {
+                    credencialesCorrectas = true;
+                    break;
+                }
             }
         }
         file.close();
 
-        if (credencialesCorrectas){
+        if (credencialesCorrectas) {
             accept();
         } else {
             QMessageBox::critical(this, "Error de Inicio de Sesión", "Usuario o contraseña incorrectos.");
         }
     }
-}
-
-bool LoginDialog::validarUsuario(const QString &usuario) {
-    static QRegularExpression regex("^[a-zA-Z]+$");
-    return regex.match(usuario).hasMatch();
 }
