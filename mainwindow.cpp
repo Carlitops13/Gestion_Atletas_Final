@@ -121,11 +121,7 @@ void MainWindow::on_tableWidget_atletas_itemClicked(QTableWidgetItem *item)
 
 void MainWindow::cargarAtletas()
 {
-    ui->tableWidget_atletas->setColumnCount(4);
-    QStringList cabeceras= {"ID", "Nombre", "Edad", "Deporte"};
-    ui->tableWidget_atletas->setHorizontalHeaderLabels(cabeceras);
     ui->tableWidget_atletas->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
     QVector<Atleta> atletas;
     QFile archivo("atletas.txt");
     if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)) {

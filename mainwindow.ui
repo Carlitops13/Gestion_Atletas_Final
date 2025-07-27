@@ -23,7 +23,28 @@
     <item row="1" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTableWidget" name="tableWidget_atletas"/>
+       <widget class="QTableWidget" name="tableWidget_atletas">
+        <column>
+         <property name="text">
+          <string>ID</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>NOMBRE</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>EDAD</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>DEPORTE</string>
+         </property>
+        </column>
+       </widget>
       </item>
      </layout>
     </item>
@@ -74,7 +95,7 @@
        <widget class="QComboBox" name="comboBox_deporte">
         <item>
          <property name="text">
-          <string/>
+          <string>Selecciona un deporte:</string>
          </property>
         </item>
         <item>
@@ -177,7 +198,7 @@
      <x>0</x>
      <y>0</y>
      <width>919</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
