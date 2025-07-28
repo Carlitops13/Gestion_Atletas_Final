@@ -100,6 +100,11 @@ void MainWindow::limpiarCampos()
 
 void MainWindow::on_pushButton_actualizar_clicked()
 {
+    const int fila=ui->tableWidget_atletas->rowCount();
+    if (fila==0){
+        QMessageBox::warning(this, "Vacio", "No hay atletas registrados.");
+        return;
+    }
     if (idSeleccionado.isEmpty()) {
         QMessageBox::warning(this, "Sin Selección", "Selecciona un atleta para actualizar.");
         return;
@@ -160,6 +165,11 @@ void MainWindow::on_pushButton_actualizar_clicked()
 
 void MainWindow::on_pushButton_eliminar_clicked()
 {
+    const int fila=ui->tableWidget_atletas->rowCount();
+    if (fila==0){
+        QMessageBox::warning(this, "Vacio", "No hay atletas registrados.");
+        return;
+    }
     if (idSeleccionado.isEmpty()) {
         QMessageBox::warning(this, "Sin Selección", "Selecciona un atleta para eliminar.");
         return;
@@ -278,6 +288,12 @@ QString MainWindow::formatearNombrePropio(const QString &texto)
 
 void MainWindow::on_pushButton_borrarTodo_clicked()
 {
+    const int fila=ui->tableWidget_atletas->rowCount();
+    if (fila==0){
+        QMessageBox::warning(this, "Vacio", "No hay atletas registrados.");
+        return;
+    }
+
     QMessageBox::StandardButton respuesta;
     respuesta = QMessageBox::warning(this, "Confirmación",
                                      "¿Estás SEGURO que quieres borrar TODOS los atletas?",
@@ -304,7 +320,7 @@ void MainWindow::on_pushButton_guardar_clicked()
         return;
     }
 
-    QString nombreArchivo = QFileDialog::getSaveFileName(this, "Guardar Lista de Atletas", "", "Archivos de Texto (*.txt)");
+    QString nombreArchivo = QFileDialog::getSaveFileName(this, "Guardar Lista de atletas", "", "Archivos de Texto (*.txt)");
 
     if (nombreArchivo.isEmpty()) return;
 
@@ -336,18 +352,23 @@ void MainWindow::on_pushButton_limpiar_clicked()
 void MainWindow::on_pushButton_buscar_clicked()
 {
     bool ok;
+    const int fila=ui->tableWidget_atletas->rowCount();
+    if (fila==0){
+        QMessageBox::warning(this, "Vacio", "No hay Atletas registrados.");
+        return;
+    }
     QString nombreBuscar = QInputDialog::getText(this, "Buscar Atleta",
-                                                 "Ingrese el nombre completo del Atleta:",
+                                                 "Ingrese el nombre completo del atleta:",
                                                  QLineEdit::Normal,
                                                  "", &ok);
     if (ok && nombreBuscar.isEmpty()) {
         QMessageBox::warning(this, "Campo vacío", "No escribiste nada.");
         return;
     }
-    const int fila=ui->tableWidget_atletas->rowCount();
     QString nombreformateado=formatearNombrePropio(nombreBuscar);
     for(int i=0;i<fila;i++){
         QString nombre=ui->tableWidget_atletas->item(i,1)->text();
+
         if(nombre==nombreformateado){
             QMessageBox::information(this, "Encontrado", "ID: "+ui->tableWidget_atletas->item(i,0)->text()+
             " \nNombre: "+nombreformateado+ "\nEdad: "+ui->tableWidget_atletas->item(i,2)->text()+
@@ -355,6 +376,6 @@ void MainWindow::on_pushButton_buscar_clicked()
             return;
         }
     }
-    QMessageBox::warning(this, "No encontrado", "No se encontro al Atleta");
+    QMessageBox::warning(this, "No encontrado", "No se encontro al atleta.");
 }
 
