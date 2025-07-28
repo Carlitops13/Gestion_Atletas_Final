@@ -34,6 +34,7 @@ private slots:
     void on_pushButton_borrarTodo_clicked();
     void on_pushButton_guardar_clicked();
     void on_pushButton_limpiar_clicked();
+    void on_pushButton_buscar_clicked();
 
 private:
     Ui::MainWindow *ui;
