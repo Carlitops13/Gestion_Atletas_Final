@@ -312,12 +312,12 @@ void MainWindow::on_pushButton_guardar_clicked()
         QTextStream out(&archivo);
 
         out << "Lista de Atletas\n";
-        out << "==============================\n";
-        out << "ID\tNombre\t\tEdad\tDeporte\n";
-        out << "------------------------------\n";
+        out << "===========================================================================\n";
+        out << "ID\tNombre\t\t\t\t\tEdad\tDeporte\n";
+        out << "---------------------------------------------------------------------------\n";
 
         for (const Atleta &a : atletas) {
-            out << a.id << "\t" << a.nombre.leftJustified(20, ' ') << "\t" << a.edad << "\t" << a.deporte << "\n";
+            out << a.id << "\t" << a.nombre.leftJustified(30, ' ') << "\t\t" << a.edad << "\t" << a.deporte.leftJustified(20, ' ') << "\n";
         }
 
         archivo.close();
