@@ -37,7 +37,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QString idSeleccionado;
+    QString idSeleccionado,nombreSeleccionado;
     QVector<Atleta> atletas;
     void cargarAtletas();
     int generarNuevoId();

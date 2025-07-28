@@ -79,9 +79,10 @@ void MainWindow::on_tableWidget_atletas_itemClicked(QTableWidgetItem *item)
     int fila = item->row();
 
     idSeleccionado = ui->tableWidget_atletas->item(fila, 0)->text();
+    nombreSeleccionado = ui->tableWidget_atletas->item(fila, 1)->text();
 
     ui->label_id->setText("ID: " + idSeleccionado);
-    ui->lineEdit_nombre->setText(ui->tableWidget_atletas->item(fila, 1)->text());
+    ui->lineEdit_nombre->setText(nombreSeleccionado);
     ui->spinBox_edad->setValue(ui->tableWidget_atletas->item(fila, 2)->text().toInt());
     ui->comboBox_deporte->setCurrentText(ui->tableWidget_atletas->item(fila, 3)->text());
 }
@@ -165,7 +166,7 @@ void MainWindow::on_pushButton_eliminar_clicked()
 
     QMessageBox::StandardButton respuesta;
     respuesta = QMessageBox::question(this, "Confirmar Eliminación",
-                                      "¿Seguro que quieres eliminar al atleta con ID " + idSeleccionado + "?",
+                                      "¿Seguro que quieres eliminar al atleta " + nombreSeleccionado + " con ID " + idSeleccionado +  " ?",
                                       QMessageBox::Yes | QMessageBox::No);
 
     if (respuesta == QMessageBox::No) return;

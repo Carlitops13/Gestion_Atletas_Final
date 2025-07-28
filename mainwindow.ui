@@ -100,6 +100,11 @@
         </item>
         <item>
          <property name="text">
+          <string>Basketball </string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Fútbol</string>
          </property>
         </item>
@@ -198,7 +203,7 @@
      <x>0</x>
      <y>0</y>
      <width>919</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>
