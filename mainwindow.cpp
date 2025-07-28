@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <QFileDialog>
+#include <QInputDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -331,3 +332,29 @@ void MainWindow::on_pushButton_limpiar_clicked()
 {
     limpiarCampos();
 }
+
+void MainWindow::on_pushButton_buscar_clicked()
+{
+    bool ok;
+    QString nombreBuscar = QInputDialog::getText(this, "Buscar Atleta",
+                                                 "Ingrese el nombre completo del Atleta:",
+                                                 QLineEdit::Normal,
+                                                 "", &ok);
+    if (ok && nombreBuscar.isEmpty()) {
+        QMessageBox::warning(this, "Campo vacío", "No escribiste nada.");
+        return;
+    }
+    const int fila=ui->tableWidget_atletas->rowCount();
+    QString nombreformateado=formatearNombrePropio(nombreBuscar);
+    for(int i=0;i<fila;i++){
+        QString nombre=ui->tableWidget_atletas->item(i,1)->text();
+        if(nombre==nombreformateado){
+            QMessageBox::information(this, "Encontrado", "ID: "+ui->tableWidget_atletas->item(i,0)->text()+
+            " \nNombre: "+nombreformateado+ "\nEdad: "+ui->tableWidget_atletas->item(i,2)->text()+
+            "\nDeporte: "+ui->tableWidget_atletas->item(i,3)->text());
+            return;
+        }
+    }
+    QMessageBox::warning(this, "No encontrado", "No se encontro al Atleta");
+}
+
