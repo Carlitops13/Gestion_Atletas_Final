@@ -10,6 +10,7 @@ LoginDialog::LoginDialog(QWidget *parent)
 {
     ui->setupUi(this);
     ui->lineEdit_password->setEchoMode(QLineEdit::Password);
+    this->setWindowTitle("Login Admin");
 }
 
 LoginDialog::~LoginDialog(){
